@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic UPI QR Code Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #4CAF50;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    input[type="number"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .qr-section {
+      margin: 20px 0;
+    }
+
+    .qr-code {
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      color: #fff;
+      background: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #45a049;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Generate UPI QR Code</h1>
+    <div class="form-group">
+      <label for="amount">Enter Amount (₹):</label>
+      <input type="number" id="amount" placeholder="Enter amount" min="1">
+    </div>
+    <button id="generateQRButton" class="btn">Generate QR Code</button>
+    <div class="qr-section">
+      <div id="qrCode" class="qr-code"></div>
+      <p id="qrMessage" style="display: none;">Scan to Pay</p>
+    </div>
+    <button id="payWithUPIButton" class="btn" style="display: none;">Pay Now</button>
+    <div class="footer">
+      <p>Made by <b>Punshi Official Store</b></p>
+    </div>
+  </div>
+
+  <!-- Include qrcode.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    const upiID = "dhaneshxsyzstore@fam"; // Updated UPI ID
+
+    function generateQR() {
+      const amount = document.getElementById("amount").value;
+      const qrCodeDiv = document.getElementById("qrCode");
+      const qrMessage = document.getElementById("qrMessage");
+      const payWithUPIButton = document.getElementById("payWithUPIButton");
+
+      // Clear previous QR Code
+      qrCodeDiv.innerHTML = "";
+
+      if (!amount || amount <= 1) {
+        alert("Please enter a valid amount.");
+        return;
+      }
+
+      // Generate UPI URL
+      const upiURL = `upi://pay?pa=${upiID}&pn=SyzOfficialStore&am=${amount}&cu=INR`;
+
+      try {
+        // Generate QR Code
+        new QRCode(qrCodeDiv, {
+          text: upiURL,
+          width: 200,
+          height: 200,
+        });
+
+        // Show QR Code and message
+        qrMessage.style.display = "block";
+
+        // Show "Pay with UPI" button
+        payWithUPIButton.style.display = "block";
+        payWithUPIButton.onclick = () => {
+          window.location.href = upiURL;
+        };
+      } catch (error) {
+        console.error("QR Code generation failed:", error);
+        alert("Failed to generate QR code. Please try again later.");
+      }
+    }
+
+    // Attach event listener to "Generate QR Code" button
+    document.getElementById("generateQRButton").addEventListener("click", generateQR);
+
+    // Automatically update QR code when user changes the amount
+    document.getElementById("amount").addEventListener("input", function() {
+      const qrCodeDiv = document.getElementById("qrCode");
+      const qrMessage = document.getElementById("qrMessage");
+      const payWithUPIButton = document.getElementById("payWithUPIButton");
+
+      // Clear previous QR code
+      qrCodeDiv.innerHTML = "";
+      qrMessage.style.display = "none"; // Hide QR code message
+      payWithUPIButton.style.display = "none"; // Hide Pay Now button
+    });
+  </script>
+</body>
+</html>
