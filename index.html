@@ -71,21 +71,6 @@
     .btn:hover {
       background: #45a049;
     }
-
-    .footer {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #aaa;
-    }
-
-    .footer a {
-      color: #007BFF;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
@@ -100,15 +85,12 @@
       <div id="qrCode" class="qr-code"></div>
       <p id="qrMessage" style="display: none;">Scan to Pay ₹<span id="displayAmount"></span></p>
     </div>
-    <div class="footer">
-      <p>Made by <b>Punshi Official Store</b></p>
-    </div>
   </div>
 
   <!-- Include qrcode.js library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    const upiID = "dhaneshxsyzstore@fam"; // Updated UPI ID
+    const upiID = "dhaneshxsyzstore@fam"; // UPI ID
 
     function generateQR() {
       const amount = document.getElementById("amount").value;
@@ -128,7 +110,7 @@
       displayAmount.textContent = amount;
 
       // Generate UPI URL
-      const upiURL = `upi://pay?pa=${upiID}&pn=YourBusinessName&am=${amount}&cu=INR`;
+      const upiURL = `upi://pay?pa=${upiID}&pn=DhaneshStore&am=${amount}&cu=INR`;
 
       try {
         // Generate QR Code
